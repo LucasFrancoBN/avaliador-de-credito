@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: mscartoes
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_CLIENT_ID}:${EUREKA_CLIENT_SECRET}@${EUREKA_HOST}:${EUREKA_PORT}/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  file:
+    name: ./logs/log-file.log
+
+mq:
+  queues:
+    emissao-cartoes: emissao-cartoes

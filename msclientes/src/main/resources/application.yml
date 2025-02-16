@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: msclientes
+
+server:
+  port: 0 # Quando subimos na porta 0, ele na verdade sube em uma porta aletaoria.
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_CLIENT_ID}:${EUREKA_CLIENT_SECRET}@${EUREKA_HOST}:${EUREKA_PORT}/eureka # Essa configuracao diz onde esta o servidor eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} # Cada id em uma aplicacao eureka deve ser unico
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  file:
+    name: ./logs/log-file.log

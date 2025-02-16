@@ -1,0 +1,108 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.2
+    container_name: keycloak
+    ports:
+      - "8081:8080"
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    command: ["start-dev"]
+
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_PASS=pass@123
+      - RABBITMQ_DEFAULT_USER=ms-admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  eureka:
+    image: 'eureka:dev'
+    build:
+      context: eurekaserver
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - CLIENT_ID=ms-eureka-server
+      - CLIENT_SECRET=pass_123
+
+  msavaliadorcredito:
+    image: 'msavaliadorcredito:dev'
+    build:
+      context: msavaliadorcredito
+      dockerfile: Dockerfile
+    container_name: ms-avaliador-credito
+    depends_on:
+      - eureka
+      - rabbitmq
+    environment:
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_CLIENT_ID=ms-eureka-server
+      - EUREKA_CLIENT_SECRET=pass_123
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=ms-admin
+      - RABBITMQ_PASSWORD=pass@123
+
+  mscartoes:
+    image: 'mscartoes:dev'
+    build:
+      context: mscartoes
+      dockerfile: Dockerfile
+    container_name: mscartoes
+    depends_on:
+      - eureka
+      - rabbitmq
+      - msavaliadorcredito
+    environment:
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_CLIENT_ID=ms-eureka-server
+      - EUREKA_CLIENT_SECRET=pass_123
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=ms-admin
+      - RABBITMQ_PASSWORD=pass@123
+
+  msclientes:
+    image: 'msclientes:dev'
+    build:
+      context: msclientes
+      dockerfile: Dockerfile
+    container_name: ms-clientes
+    depends_on:
+      - eureka
+    environment:
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_CLIENT_ID=ms-eureka-server
+      - EUREKA_CLIENT_SECRET=pass_123
+
+  msgateway:
+    image: 'msgateway:dev'
+    build:
+      context: mscloudgateway
+      dockerfile: Dockerfile
+    container_name: ms-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+      - msavaliadorcredito
+      - mscartoes
+      - msclientes
+      - keycloak
+    environment:
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_CLIENT_ID=ms-eureka-server
+      - EUREKA_CLIENT_SECRET=pass_123
+      - KEYCLOAK_HOST=keycloak
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=mscreditorealm
