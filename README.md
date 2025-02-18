@@ -66,13 +66,14 @@ Após isso, rode o seguinte comando no diretório raiz do projeto (somente se ti
 docker-compose up
 ```
 Depois da inicialização de todos os containers, acesse o painel de controle do Keycloak em http://localhost:8081:
-
-Nele, digite o usuário como admin e senha admin:
+![login](img-readme/login-keycloak.png)
+*Digite o usuário como admin e senha admin.*
 
 Agora importe o arquivo json que tem na raiz do projeto (http://localhost:8081/admin/master/console/#/master/add-realm):
+![adicionando realm](img-readme/adicionando-realm.png)
 
 Ao acessar o realm que foi criado após a importação do arquivo json, vá em **Realm Settings** > **Frontend URL** e cole a seguinte URL: http://keycloak:8080:
-
+![adicionando Frontend URL](img-readme/adicionando-frontend-url.png)
 
 PS: Para facilitar os testes, a Collection do Postman está disponível para testar os endpoints.
 
