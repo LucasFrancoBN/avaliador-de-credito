@@ -373,13 +373,13 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "accessTokenUrl",
-									"value": "http://localhost:8081/realms/mscourserealm/protocol/openid-connect/token",
+									"key": "clientSecret",
+									"value": "**********",
 									"type": "string"
 								},
 								{
-									"key": "clientSecret",
-									"value": "QNozcnUeOjk3u4mWeUwcIQT2jecbw2Lo",
+									"key": "accessTokenUrl",
+									"value": "http://localhost:8081/realms/mscreditorealm/protocol/openid-connect/token",
 									"type": "string"
 								},
 								{
