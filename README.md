@@ -5,7 +5,7 @@
   <a href="#descrição-do-projeto">Descrição do projeto</a> -
   <a href="#ferramentas-utilizadas">Ferramentas utilizadas</a> - 
   <a href="#guia-de-implantação">Guia de implantação</a> -
-  <a href="#arquitetura">Vídeo de demonstração</a> -
+  <a href="#arquitetura">Arquitetura</a> -
   <a href="#desenvolvedores">Desenvolvedores</a>
 </div>
 
